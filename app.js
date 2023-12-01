@@ -59,17 +59,17 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-app.get('/api/users', (req, res) => {
-  const query = 'SELECT * FROM users';
-  db.query(query, (err, result) => {
-    if (err) {
-      console.error('Error fetching users:', err);
-      res.send('Error fetching users.');
-    } else {
-      res.json(result);
-    }
-  });
-});
+// app.get('/api/users', (req, res) => {
+//   const query = 'SELECT * FROM users';
+//   db.query(query, (err, result) => {
+//     if (err) {
+//       console.error('Error fetching users:', err);
+//       res.send('Error fetching users.');
+//     } else {
+//       res.json(result);
+//     }
+//   });
+// });
 
 app.get('/api/usersWithAuth',authenticateToken, (req, res) => {
   const query = 'SELECT * FROM users';
