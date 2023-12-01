@@ -18,10 +18,10 @@ app.use(bodyParser.json());
 
 const authenticateToken = (req, res, next) => {
   const token = req.header('Authorization');
-  if (!token) return res.status(401).send('Access denied. Token not provided.');
+  if (!token) return res.send('Access denied. Token not provided.');
 
   jwt.verify(token, 'emblaasia', (err, user) => {
-    if (err) return res.status(403).send('Invalid token.');
+    if (err) return res.send('Invalid token.');
     req.user = user;
     next();
   });
@@ -34,9 +34,9 @@ app.post('/api/createUsers', (req, res) => {
   db.query(query, [name, password, email], (err, result) => {
     if (err) {
       console.error('Error creating user:', err);
-      res.status(500).send('Error creating user.');
+      res.send('Error creating user.');
     } else {
-      res.status(201).send('User created successfully.');
+      res.send('User created successfully.');
     }
   });
 });
@@ -48,13 +48,13 @@ app.post('/api/login', (req, res) => {
   db.query(query, [name, password], (err, result) => {
     if (err) {
       console.error('Login error:', err);
-      res.status(500).send('Login error.');
+      res.send('Login error.');
     } else if (result.length > 0) {
       const user = { name, email: result[0].email };
       const token = jwt.sign(user, 'emblaasia');
       res.json({ message: 'Login successful', token });
     } else {
-      res.status(401).send('Invalid credentials.');
+      res.send('Invalid credentials.');
     }
   });
 });
@@ -64,7 +64,7 @@ app.get('/api/users', (req, res) => {
   db.query(query, (err, result) => {
     if (err) {
       console.error('Error fetching users:', err);
-      res.status(500).send('Error fetching users.');
+      res.send('Error fetching users.');
     } else {
       res.json(result);
     }
@@ -76,12 +76,13 @@ app.get('/api/usersWithAuth',authenticateToken, (req, res) => {
   db.query(query, (err, result) => {
     if (err) {
       console.error('Error fetching users:', err);
-      res.status(500).send('Error fetching users.');
+      res.send('Error fetching users.');
     } else {
       res.json(result);
     }
   });
 });
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
