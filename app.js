@@ -71,6 +71,17 @@ app.get('/api/users', (req, res) => {
   });
 });
 
+app.get('/api/usersWithAuth',authenticateToken, (req, res) => {
+  const query = 'SELECT * FROM users';
+  db.query(query, (err, result) => {
+    if (err) {
+      console.error('Error fetching users:', err);
+      res.status(500).send('Error fetching users.');
+    } else {
+      res.json(result);
+    }
+  });
+});
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
