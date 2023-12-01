@@ -30,8 +30,6 @@ const authenticateToken = (req, res, next) => {
 app.post('/api/createUsers', (req, res) => {
   const { name, password, email } = req.body;
   
-  // Perform validations here
-
   const query = 'INSERT INTO users (name, password, email) VALUES (?, ?, ?)';
   db.query(query, [name, password, email], (err, result) => {
     if (err) {
@@ -61,7 +59,7 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-app.get('/api/users', authenticateToken, (req, res) => {
+app.get('/api/users', (req, res) => {
   const query = 'SELECT * FROM users';
   db.query(query, (err, result) => {
     if (err) {
